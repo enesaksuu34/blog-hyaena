@@ -6,34 +6,19 @@ const About: NextPage = () => {
   return (
     <>
       <Page
-        title="About"
-        description="This is a brief description about the about page."
+        title="About - Hyaena Blog"
+        description="Welcome to the Hyaena Digital Blog - your hub for navigating the digital realm. Dive into a world where innovation meets expertise as we explore the latest trends, insights, and solutions in the ever-evolving landscape of technology."
       >
         <Prose>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam sed
-            aliquam tempora nihil magni natus mollitia. Doloribus,
-            exercitationem iusto odio asperiores dolor, alias excepturi maxime
-            distinctio quod eum saepe eos!
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam sed
-            aliquam tempora nihil magni natus mollitia. Doloribus,
-            exercitationem iusto odio asperiores dolor, alias excepturi maxime
-            distinctio quod eum saepe eos!
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam sed
-            aliquam tempora nihil magni natus mollitia. Doloribus,
-            exercitationem iusto odio asperiores dolor, alias excepturi maxime
-            distinctio quod eum saepe eos!
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam sed
-            aliquam tempora nihil magni natus mollitia. Doloribus,
-            exercitationem iusto odio asperiores dolor, alias excepturi maxime
-            distinctio quod eum saepe eos!
-          </p>
+        <p>
+          At Hyaena Digital, we stand at the forefront of digital transformation, providing unparalleled services tailored to your needs. Led by a team of visionaries, tech enthusiasts, and cybersecurity experts, we are committed to empowering individuals and companies through cutting-edge solutions and top-notch security measures.
+        </p>
+        <p>
+          Embark on a journey with us as we share our experiences, knowledge, and industry insights gained from years of serving clients worldwide. From cybersecurity tips to server management best practices, we are here to equip you with the tools you need to thrive in the digital age.
+        </p>
+        <p>
+          Our mission is simple yet powerful: to democratize digitalization and make it accessible to all. Through our blog, we aim to demystify complex technologies, offer practical advice, and foster a community of digital enthusiasts dedicated to continuous learning and growth.
+        </p>
         </Prose>
       </Page>
     </>
