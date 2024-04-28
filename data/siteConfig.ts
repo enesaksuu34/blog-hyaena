@@ -1,20 +1,21 @@
 import type { SiteConfig } from "@/lib/types";
 const siteConfig: SiteConfig = {
-  avatar: "/avatar.png",
-  siteUrl: "https://nextjs-mdx-blog-theme.vercel.app",
-  siteName: "Alex Carpenter",
+  avatar: "https://img.hyaena.co.uk/hlogo.png",
+  siteUrl: "https://blog.hyaena.co.uk",
+  siteName: "Hyaena Blog",
   siteDescription:
-    "Starter template for a personal website blog, built with Next.js, MDX, and Tailwind CSS.",
-  siteThumbnail: "/og-image.png",
+    "Empowering Your Digital Journey with Expert Insights and Solutions",
+  siteThumbnail: "https://img.hyaena.co.uk/hlogo.png",
   nav: [
     { label: "Posts", href: "/posts" },
     { label: "About", href: "/about" },
+    { label: "Hyaena Digital", href: "https://hyaena.co.uk/" },
   ],
   social: {
-    github: "https://github.com/alexcarpenter",
-    twitter: "https://twitter.com/hyrbid_alex",
-    linkedin: "https://www.linkedin.com/in/imalexcarpenter/",
-    instagram: "https://www.instagram.com/alexcarp/",
+    github: "#",
+    twitter: "#",
+    linkedin: "#",
+    instagram: "#",
   },
 };
 export default siteConfig;
