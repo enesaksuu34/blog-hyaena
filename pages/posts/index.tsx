@@ -13,7 +13,7 @@ const Posts: NextPage<PostsProps> = ({ posts }) => {
     <>
       <Page
         title="Posts"
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        description="Explore the latest insights, trends, and solutions in the digital world with Hyaena Digital. Our blog posts cover a wide range of topics, from cybersecurity best practices to server management tips and digital marketing strategies. Stay informed, engaged, and inspired as you delve into our articles crafted to empower you in the digital realm."
       >
         <PostList posts={posts} />
       </Page>
