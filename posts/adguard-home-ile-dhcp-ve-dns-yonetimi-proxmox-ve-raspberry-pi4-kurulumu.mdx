@@ -1,0 +1,123 @@
+---
+title: "AdGuard Home ile DHCP ve DNS Yönetimi: Proxmox ve Raspberry Pi4 Kurulumu"
+description: "Bu blog yazısında, AdGuard Home'u Proxmox üzerinde bir sanal makinede çalıştırarak nasıl DHCP ve DNS sunucusu olarak yapılandırabileceğinizi ve Raspberry Pi 4 kullanarak internet bağlantısını nasıl yöneteceğinizi öğrenin."
+date: "2024-05-16"
+tags: ["AdGuard Home", "Proxmox", "Raspberry Pi4", "DHCP", "DNS", "ağ yönetimi"]
+---
+
+Günümüzün dijital dünyasında, ağ trafiğini yönetmek ve zararlı içerikleri engellemek oldukça önemlidir. Bu blog yazısında, AdGuard Home'u Proxmox üzerinde bir sanal makinede (VM) çalıştırarak nasıl DHCP ve DNS sunucusu olarak yapılandırabileceğinizi anlatacağız. Ayrıca, Raspberry Pi 4 (Pi4) kullanarak internet bağlantısını nasıl yöneteceğinizi ve tüm cihazlarınızın IP adreslerini AdGuard Home üzerinden nasıl alacağını öğreneceksiniz.
+
+## Proxmox Üzerinde AdGuard Home Kurulumu
+
+### Adım 1: Proxmox VM Oluşturma
+
+1. **Proxmox Web Arayüzüne Giriş:**
+   - Tarayıcınızı açın ve Proxmox Web UI'ye bağlanın.
+
+2. **Yeni Bir VM Oluşturma:**
+   - "Create VM" butonuna tıklayın.
+   - VM için bir isim verin ve temel ayarları yapılandırın (OS, sistem, disk, CPU, bellek).
+   - OS olarak hafif bir Linux dağıtımı (örneğin, Ubuntu Server) seçin.
+
+3. **Ağ Ayarlarını Yapılandırma:**
+   - Ağ yapılandırma bölümünde, bir ağ köprüsü (`vmbr0`) seçtiğinizden emin olun. Bu, VM'in ağa erişimini sağlar.
+
+4. **VM Kurulumunu Tamamlama ve Başlatma:**
+   - VM oluşturma sürecini tamamlayın ve VM'i başlatın.
+
+### Adım 2: OS Kurulumu
+
+1. **VM'i Başlatma ve Konsolu Açma:**
+   - VM'i başlattıktan sonra, VM'e tıklayın ve "Console" sekmesinden konsola erişin.
+
+2. **OS Kurulumu:**
+   - Seçtiğiniz Linux dağıtımını VM'e kurun.
+
+### Adım 3: AdGuard Home Kurulumu
+
+1. **Sistemi Güncelleme:**
+   ```bash
+   sudo apt update && sudo apt upgrade -y
+   ```
+
+2. **AdGuard Home'u İndirme ve Kurma:**
+   ```bash
+   curl -s -S -L -o /tmp/AdGuardHome.tar.gz 'https://static.adguard.com/adguardhome/release/AdGuardHome_linux_amd64.tar.gz'
+   tar -xvf /tmp/AdGuardHome.tar.gz -C /opt/
+   /opt/AdGuardHome/AdGuardHome -s install
+   ```
+
+3. **AdGuard Home'u Başlatma:**
+   ```bash
+   sudo systemctl start AdGuardHome.service
+   sudo systemctl enable AdGuardHome.service
+   ```
+
+4. **AdGuard Home'a Erişim:**
+   - Tarayıcıda `http://<VM-IP-Adresi>:3000` adresine giderek AdGuard Home kurulumunu tamamlayın.
+
+## Pi4 Üzerinde Ağ Ayarları ve AdGuard Home Kullanımı
+
+### Adım 1: Pi4'ü Modem/Router’a Bağlama
+
+1. **Ethernet Bağlantısı:**
+   - Pi4'ü modem/router'a Ethernet kablosuyla bağlayın.
+
+2. **Pi4 için Statik IP Atama:**
+   - Pi4 üzerindeki ağ yapılandırma dosyasını düzenleyin:
+     ```bash
+     sudo nano /etc/dhcpcd.conf
+     ```
+   - Şu satırları ekleyin:
+     ```plaintext
+     interface eth0
+     static ip_address=192.168.1.100/24
+     static routers=192.168.1.1
+     static domain_name_servers=1.1.1.1 8.8.8.8
+     ```
+   - Değişiklikleri kaydedip çıkın ve Pi4'ü yeniden başlatın:
+     ```bash
+     sudo reboot
+     ```
+
+### Adım 2: AdGuard Home’u DHCP Sunucusu Olarak Yapılandırma
+
+1. **AdGuard Home Arayüzüne Giriş:**
+   - Tarayıcıda `http://192.168.1.100:3000` adresine gidin.
+
+2. **DHCP Ayarlarını Yapılandırma:**
+   - "Settings" -> "DHCP Settings" bölümüne gidin.
+   - "Enable DHCP Server" seçeneğini işaretleyin.
+   - IP adres aralığını belirleyin (örneğin, `192.168.1.50` - `192.168.1.150`).
+   - Gateway: `192.168.1.1`
+   - DNS Sunucuları: `192.168.1.100`
+   - Ayarları kaydedin.
+
+### Adım 3: Router Üzerinde DHCP Sunucusunu Devre Dışı Bırakma
+
+1. **Router’a Giriş:**
+   - Tarayıcıda router IP adresini (örneğin, `192.168.1.1`) girin.
+   - Yönetici kimlik bilgileriyle giriş yapın.
+
+2. **DHCP Ayarlarına Gitme:**
+   - "LAN Ayarları" veya "Ağ Ayarları" bölümünü bulun.
+
+3. **DHCP Sunucusunu Devre Dışı Bırakma:**
+   - DHCP sunucusunu devre dışı bırakın ve ayarları kaydedin.
+
+### Adım 4: Cihazların AdGuard Home’dan IP Adresi Almasını Sağlama
+
+1. **Cihazları Ağa Yeniden Bağlama:**
+   - Ağa bağlı cihazları ağdan ayırıp tekrar bağlayın.
+
+2. **IP Adresi Alma Süreci:**
+   - Cihazlar, ağ bağlanma sürecinde DHCPDISCOVER mesajları gönderir.
+   - AdGuard Home, bu mesajlara DHCPOFFER ile yanıt verir.
+   - Cihazlar, DHCPREQUEST ile teklifi kabul eder ve AdGuard Home, DHCPACK ile onaylar.
+
+3. **Doğrulama:**
+   - Cihazların IP adresi ve DNS ayarlarını kontrol edin (`ipconfig /all` veya `ifconfig` komutlarını kullanarak).
+
+### Sonuç
+
+Bu adımları takip ederek, ağınızdaki tüm cihazların IP adreslerini ve DNS ayarlarını AdGuard Home’dan almasını sağlayabilirsiniz. Bu sayede, AdGuard Home’un sağladığı reklam ve zararlı içerik filtreleme gibi avantajlardan faydalanabilirsiniz.
