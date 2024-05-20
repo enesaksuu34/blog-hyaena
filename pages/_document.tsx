@@ -1,3 +1,4 @@
+// pages/_document.tsx
 import { Html, Head, Main, NextScript } from "next/document";
 import Document, { DocumentContext } from "next/document";
 import { cx } from "@/lib/utils";
@@ -11,7 +12,24 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head />
+        <Head>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=G-CLL1CRSFF1`}
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_TRACKING_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `,
+            }}
+          />
+        </Head>
         <body
           className={cx(
             "bg-gray-50 text-gray-800",
